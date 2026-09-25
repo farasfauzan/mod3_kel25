@@ -37,7 +37,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<List<Country>> fetchCountries() async {
-    final uri = Uri.parse('https://www.apicountries.com/countries');
+    // Endpoint kanonik: www.apicountries.com melakukan 301 ke countries.dev,
+    // dan permintaan lanjutan itu menggantung tanpa batas waktu di perangkat.
+    final uri = Uri.parse('https://countries.dev/countries');
     // Header User-Agent agar tidak kena 403 dari server API.
     // Di Web header ini tidak boleh di-set manual (browser yang isi sendiri),
     // jadi hanya ditambahkan di non-Web (Android/Desktop).
@@ -46,7 +48,18 @@ class _HomePageState extends State<HomePage> {
       headers['Accept'] = 'application/json';
       headers['User-Agent'] = 'Mozilla/5.0 (Flutter; mod3_kel25)';
     }
-    final response = await http.get(uri, headers: headers);
+    // Tanpa batas waktu, kegagalan jaringan membuat halaman berhenti pada
+    // indikator memuat. Batas 30 detik memberi kesempatan satu kali ulang.
+    late http.Response response;
+    try {
+      response = await http.get(uri, headers: headers).timeout(
+            const Duration(seconds: 30),
+          );
+    } on Object {
+      response = await http.get(uri, headers: headers).timeout(
+            const Duration(seconds: 30),
+          );
+    }
 
     if (response.statusCode == 200) {
       final List jsonData = jsonDecode(response.body);
