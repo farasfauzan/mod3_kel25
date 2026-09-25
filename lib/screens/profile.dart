@@ -55,16 +55,21 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               // Isi dibuat dapat digulir agar seluruh anggota tetap terbaca
               // ketika jumlahnya banyak dan layar tidak cukup tinggi.
-              SingleChildScrollView(
-                padding: EdgeInsets.only(
-                  top: bannerHeight - 50.0,
-                  left: 16.0,
-                  right: 16.0,
-                  bottom: 24.0,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
+              // SizedBox lebar penuh wajib: di dalam Stack, anak tanpa posisi
+              // hanya mendapat constraint longgar sehingga Column menyusut
+              // selebar teks terpanjang dan isinya jadi menempel ke kiri.
+              SizedBox(
+                width: double.infinity,
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.only(
+                    top: bannerHeight - 50.0,
+                    left: 16.0,
+                    right: 16.0,
+                    bottom: 24.0,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
                     Container(
                       width: 100.0,
                       height: 100.0,
@@ -96,7 +101,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           const SizedBox(height: 8.0),
                         ],
                       ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
