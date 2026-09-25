@@ -1,0 +1,51 @@
+LANGKAH PERCOBAAN MODUL 3 FLUTTER (Kelompok 25)
+=============================================
+
+A. INSTALL (sekali saja, sesuai Bab 3.2.4 + tutorial https://www.youtube.com/watch?v=fDnqXmLSqtg)
+1. Download Flutter SDK: https://flutter.dev/docs/get-started/install (sesuaikan Windows)
+2. Extract misal ke C:\src\flutter, lalu tambahkan C:\src\flutter\bin ke PATH
+3. Install Android Studio + buat Android Virtual Device (AVD), atau siapkan HP Android + kabel USB (aktifkan USB Debugging)
+4. Install VSCode + extension "Flutter" dan "Dart"
+5. Cek: flutter doctor
+
+B. BUKA PROJECT INI
+1. Project sudah dibuat di: C:\Users\faras\AndroidStudioProjects\mod3_kel25
+2. Di CMD / terminal: cd "C:\Users\faras\AndroidStudioProjects\mod3_kel25" && code .
+   (sama seperti Gambar 3.9 di modul: cd mod3_kelxx && code .)
+3. Di VSCode kanan-bawah pilih device (Gambar 3.12-3.13): Chrome / Emulator / HP
+4. Menu Run and Debug > klik Run and Debug / tekan F5 (Gambar 3.10-3.11, 3.14)
+
+C. TAMBAH PACKAGE HTTP (Gambar 3.15)
+   flutter pub add http
+   (sudah ada di pubspec.yaml, tinggal flutter pub get bila belum)
+
+D. STRUKTUR FILE (Gambar 3.16-3.17) — SUDAH DIBUAT, tinggal cek:
+   lib/main.dart               -> CountryApp, home: NavigationPage()
+   lib/screens/home.dart       -> fetchCountries() + ListView + Country.fromJson
+   lib/screens/detail.dart     -> DetailPage(country)
+   lib/screens/profile.dart    -> ProfilePage (Nama+NIM Kelompok 25)
+   lib/widget/navigation.dart  -> BottomNavigationBar Home/Profile
+   test/widget_test.dart       -> test "Country app displays its main navigation"
+
+E. RUN & UJI (Gambar 3.18-3.21)
+1. Simpan semua file, klik Hot Restart (Gambar 3.18)
+2. Harusnya muncul:
+   - Home: list negara + bendera (Gambar 3.19)
+   - Klik negara -> Detail: Name/Capital/Region/Population/Languages/Currencies (Gambar 3.20)
+   - Tab Profile: foto + Nama Faras Fauzan Attaqi + NIM 21120124140119 (Gambar 3.21)
+3. Jalankan test: flutter test  (harus PASS 1 test)
+4. Untuk laporan: screenshot Emulator (tombol kamera di emulator) untuk Gambar 3.19/3.20/3.21
+
+F. JIKA ERROR UMUM
+- "flutter not recognized": PATH belum benar, restart terminal/VSCode
+- "Failed to load countries: 403": pastikan home.dart versi baru (ada User-Agent) yang sudah dipakai
+- "No countries found": cek internet emulator (aktifkan WiFi/data)
+- Gambar network tidak muncul di Windows: tambahkan <uses-permission android:name="android.permission.INTERNET"/> di android/app/src/main/AndroidManifest.xml (biasanya sudah ada dari flutter create)
+- Avatar GitHub tidak muncul: ganti URL di lib/screens/profile.dart dengan foto lain
+
+G. PERINTAH LENGKAP DARI NOL (bila mau recreate persis modul)
+   flutter create mod3_kel25
+   cd mod3_kel25
+   code .
+   flutter pub add http
+   (lalu copy-paste isi lib/ dan test/ dari project ini)
