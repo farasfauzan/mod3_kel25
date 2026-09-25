@@ -30,63 +30,78 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      body: Stack(
-        alignment: Alignment.center,
-        children: [
-          Positioned.fill(
-            child: FractionallySizedBox(
-              alignment: Alignment.topCenter,
-              heightFactor: 0.5,
-              child: Container(
-                decoration: BoxDecoration(
-                  image: const DecorationImage(
-                    fit: BoxFit.cover,
-                    alignment: Alignment.topCenter,
-                    image: AssetImage('assets/background.png'),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          // Tinggi latar = separuh tinggi area isi, dipakai juga untuk
+          // menempatkan foto profil tepat di batas latar.
+          final bannerHeight = constraints.maxHeight * 0.5;
+
+          return Stack(
+            children: [
+              SizedBox(
+                height: bannerHeight,
+                width: double.infinity,
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: const DecorationImage(
+                      fit: BoxFit.cover,
+                      alignment: Alignment.topCenter,
+                      image: AssetImage('assets/background.png'),
+                    ),
+                    color: const Color.fromARGB(255, 255, 252, 252)
+                        .withValues(alpha: 0.5),
                   ),
-                  color: const Color.fromARGB(255, 255, 252, 252)
-                      .withValues(alpha: 0.5),
                 ),
               ),
-            ),
-          ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 100.0,
-                  height: 100.0,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/profile.jpg'),
-                    ),
-                  ),
+              // Isi dibuat dapat digulir agar seluruh anggota tetap terbaca
+              // ketika jumlahnya banyak dan layar tidak cukup tinggi.
+              SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  top: bannerHeight - 50.0,
+                  left: 16.0,
+                  right: 16.0,
+                  bottom: 24.0,
                 ),
-                const SizedBox(height: 16.0),
-                for (var member in teamMembers)
-                  Column(
-                    children: [
-                      Text(
-                        member['Nama'] ?? 'No Name',
-                        style: const TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 100.0,
+                      height: 100.0,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/profile.jpg'),
                         ),
                       ),
-                      const SizedBox(height: 8.0),
-                      Text(
-                        member['NIM'] ?? 'No NIM',
-                        style: const TextStyle(fontSize: 16.0),
+                    ),
+                    const SizedBox(height: 32.0),
+                    for (var member in teamMembers)
+                      Column(
+                        children: [
+                          Text(
+                            member['Nama'] ?? 'No Name',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8.0),
+                          Text(
+                            member['NIM'] ?? 'No NIM',
+                            style: const TextStyle(fontSize: 16.0),
+                          ),
+                          const SizedBox(height: 8.0),
+                        ],
                       ),
-                    ],
-                  ),
-              ],
-            ),
-          ),
-        ],
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
